@@ -1,5 +1,9 @@
 let startTime;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getNewBrowserTitle(dur) {
     hrs = Math.floor(dur/1000/60/60);
     min = Math.floor(dur/1000/60-hrs*60);
