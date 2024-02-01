@@ -19,14 +19,13 @@ async function processMessageQueue() {
     processingQueue = false;
 }
 
-let enabledConsoleMsg = false
+let showLastLogOnly = null
 
 async function sendToConsole(message) {
-    if (message == 'stage: triple free') {
-        enabledConsoleMsg = true;
+    if (showLastLogOnly != null) {
+        messageSpan.textContent = message;
+        return;
     }
-
-    if (!enabledConsoleMsg) return;
 
     const consoleDiv = document.createElement('div');
     consoleDiv.classList.add('output');
@@ -36,17 +35,19 @@ async function sendToConsole(message) {
     promptSpan.textContent = '[System] ';
   
     const messageSpan = document.createElement('span');
-    messageSpan.textContent = message;
+    messageSpan.textContent = '';
+
+    showLastLogOnly = messageSpan;
   
     consoleDiv.appendChild(promptSpan);
     consoleDiv.appendChild(messageSpan);
   
     document.querySelector('.info').appendChild(consoleDiv);
   
-    //for (let i = 0; i < message.length; i++) {
-        //messageSpan.textContent += message.charAt(i);
-        //await sleep(20);
-    //}
+    for (let i = 0; i < message.length; i++) {
+        messageSpan.textContent += message.charAt(i);
+        await sleep(20);
+    }
 }
 
 function printToConsole(message) {
