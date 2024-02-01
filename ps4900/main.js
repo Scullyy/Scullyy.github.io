@@ -19,14 +19,7 @@ async function processMessageQueue() {
     processingQueue = false;
 }
 
-let showLastLogOnly = null
-
 async function sendToConsole(message) {
-    if (showLastLogOnly != null) {
-        messageSpan.textContent = message;
-        return;
-    }
-
     const consoleDiv = document.createElement('div');
     consoleDiv.classList.add('output');
   
@@ -36,8 +29,6 @@ async function sendToConsole(message) {
   
     const messageSpan = document.createElement('span');
     messageSpan.textContent = '';
-
-    showLastLogOnly = messageSpan;
   
     consoleDiv.appendChild(promptSpan);
     consoleDiv.appendChild(messageSpan);
