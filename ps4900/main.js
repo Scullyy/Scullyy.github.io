@@ -28,17 +28,17 @@ async function sendToConsole(message) {
     promptSpan.textContent = '[System] ';
   
     const messageSpan = document.createElement('span');
-    messageSpan.textContent = '';
+    messageSpan.textContent = message;
   
     consoleDiv.appendChild(promptSpan);
     consoleDiv.appendChild(messageSpan);
   
     document.querySelector('.info').appendChild(consoleDiv);
   
-    for (let i = 0; i < message.length; i++) {
-        messageSpan.textContent += message.charAt(i);
-        await sleep(50);
-    }
+    //for (let i = 0; i < message.length; i++) {
+        //messageSpan.textContent += message.charAt(i);
+        //await sleep(20);
+    //}
 }
 
 function printToConsole(message) {
