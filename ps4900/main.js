@@ -4,6 +4,23 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function log(msg) {
+    const consoleDiv = document.createElement('div');
+    consoleDiv.classList.add('output');
+
+    const promptSpan = document.createElement('span');
+    promptSpan.classList.add('prompt');
+    promptSpan.textContent = '[System] ';
+    
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = msg;
+  
+    consoleDiv.appendChild(promptSpan);
+    consoleDiv.appendChild(messageSpan);
+  
+    document.querySelector('.info').appendChild(consoleDiv);
+}
+
 function getNewBrowserTitle(dur) {
     hrs = Math.floor(dur/1000/60/60);
     min = Math.floor(dur/1000/60-hrs*60);
@@ -56,7 +73,7 @@ function loadPayload(payloadFile) {
 }
 
 function runHomebrewEnabler() {
-    debug_log("Loading latest version of GoldHen...", true)
+    log("Loading latest version of GoldHen...")
     loadPayload("goldhen.bin");
-    debug_log("GoldHen loaded.", true)
+    log("GoldHen loaded.")
 }

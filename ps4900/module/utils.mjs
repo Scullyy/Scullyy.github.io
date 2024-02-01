@@ -22,7 +22,7 @@ export function die(msg) {
     undefinedFunction();
 }
 
-export async function debug_log(msg, force) {
+export function debug_log(msg, force) {
     let debugLogs = true;
 
     if (debugLogs || force) {
