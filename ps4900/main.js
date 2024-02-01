@@ -19,7 +19,15 @@ async function processMessageQueue() {
     processingQueue = false;
 }
 
+let enabledConsoleMsg = false
+
 async function sendToConsole(message) {
+    if (message == 'stage: triple free') {
+        enabledConsoleMsg = true;
+    }
+
+    if (!enabledConsoleMsg) return;
+
     const consoleDiv = document.createElement('div');
     consoleDiv.classList.add('output');
   
