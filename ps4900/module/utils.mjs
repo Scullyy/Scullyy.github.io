@@ -22,11 +22,24 @@ export function die(msg) {
     undefinedFunction();
 }
 
-export async function debug_log(msg) {
+export async function debug_log(msg, force) {
     let debugLogs = true;
 
-    if (debugLogs) {
-        printToConsole(msg);
+    if (debugLogs || force) {
+        const consoleDiv = document.createElement('div');
+        consoleDiv.classList.add('output');
+
+        const promptSpan = document.createElement('span');
+        promptSpan.classList.add('prompt');
+        promptSpan.textContent = '[System] ';
+    
+        const messageSpan = document.createElement('span');
+        messageSpan.textContent = msg;
+  
+        consoleDiv.appendChild(promptSpan);
+        consoleDiv.appendChild(messageSpan);
+  
+        document.querySelector('.info').appendChild(consoleDiv);
     }
 }
 
