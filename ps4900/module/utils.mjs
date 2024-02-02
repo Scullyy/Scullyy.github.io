@@ -23,7 +23,7 @@ export function die(msg) {
 }
 
 export function debug_log(msg, force) {
-    let debugLogs = true;
+    let debugLogs = false;
 
     if (debugLogs || force) {
         const consoleDiv = document.createElement('div');
