@@ -23,15 +23,20 @@ export function die(msg) {
 }
 
 export function debug_log(msg) {
-    let textNode = document.createTextNode(msg);
-    let node = document.createElement("p").appendChild(textNode);
+    const consoleDiv = document.createElement('div');
+    consoleDiv.classList.add('output');
 
-    document.body.appendChild(node);
-    document.body.appendChild(document.createElement("br"));
-}
-
-export function clear_log() {
-    document.body.innerHTML = null;
+    const promptSpan = document.createElement('span');
+    promptSpan.classList.add('prompt');
+    promptSpan.textContent = '[System] ';
+    
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = msg;
+  
+    consoleDiv.appendChild(promptSpan);
+    consoleDiv.appendChild(messageSpan);
+  
+    document.querySelector('.info').appendChild(consoleDiv);
 }
 
 export function str2array(str, length, offset) {

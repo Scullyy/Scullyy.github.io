@@ -2,7 +2,6 @@ const stack_sz = 0x40000;
 const reserve_upper_stack = 0x10000;
 const stack_reserved_idx = reserve_upper_stack / 4;
 
-
 // Class for quickly creating and managing a ROP chain
 window.rop = function () {
     this.stackback = p.malloc32(stack_sz / 4 + 0x8);
