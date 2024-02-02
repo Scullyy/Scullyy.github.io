@@ -22,21 +22,25 @@ export function die(msg) {
     undefinedFunction();
 }
 
-export function debug_log(msg) {
-    const consoleDiv = document.createElement('div');
-    consoleDiv.classList.add('output');
+export function debug_log(msg, force) {
+    let debugLogs = true;
 
-    const promptSpan = document.createElement('span');
-    promptSpan.classList.add('prompt');
-    promptSpan.textContent = '[System] ';
+    if (debugLogs || force) {
+        const consoleDiv = document.createElement('div');
+        consoleDiv.classList.add('output');
+
+        const promptSpan = document.createElement('span');
+        promptSpan.classList.add('prompt');
+        promptSpan.textContent = '[System] ';
     
-    const messageSpan = document.createElement('span');
-    messageSpan.textContent = msg;
+        const messageSpan = document.createElement('span');
+        messageSpan.textContent = msg;
   
-    consoleDiv.appendChild(promptSpan);
-    consoleDiv.appendChild(messageSpan);
+        consoleDiv.appendChild(promptSpan);
+        consoleDiv.appendChild(messageSpan);
   
-    document.querySelector('.info').appendChild(consoleDiv);
+        document.querySelector('.info').appendChild(consoleDiv);
+    }
 }
 
 export function str2array(str, length, offset) {
