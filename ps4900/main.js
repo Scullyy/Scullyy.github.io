@@ -4,7 +4,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function log(msg) {
+function notification(msg) {
     const consoleDiv = document.createElement('div');
     consoleDiv.classList.add('output');
 
@@ -73,7 +73,7 @@ function loadPayload(payloadFile) {
 }
 
 function runHomebrewEnabler() {
-    log("Loading latest version of GoldHen...")
+    notification("Loading latest version of GoldHen...")
     loadPayload("goldhen.bin");
-    log("GoldHen loaded.")
+    notification("GoldHen loaded.")
 }
