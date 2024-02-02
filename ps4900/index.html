@@ -1,87 +1,90 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <title>Scully - 9.00 Host</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="favicon.ico">
-    
-        <style>
-            body {
-                background: #000;
-                color: #FF5252;
-                font-family: 'Courier New', monospace;
-                font-size: 20px;
-                text-align: left;
-                padding: 20px;
-                margin: 0;
-                white-space: pre-line;
-                line-height: 1.1;
-                overflow: hidden;
+
+<head>
+    <title>pOOBs4 9.00 & PSfree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #242629;
+        }
+
+        .loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -75px 0 0 -75px;
+
+            border: 10px solid #1f1e1e;
+            border-radius: 50%;
+            border-top: 10px solid #044595;
+            border-left: 10px solid #044595;
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
             }
-    
-            .output {
-                color: #FF5252;
-                word-break: break-all;
+
+            100% {
+                transform: rotate(360deg);
             }
-    
-            .prompt {
-                color: #fff;
-            }
-    
-            .info {
-                position: relative;
-                background-color: #333;
-                border: 1px solid #FF5252;
-                width: 98.5%;
-                overflow: auto;
-                border-radius: 5px;
-                padding: 10px;
-                word-wrap: break-word;
-            }
-    
-            .watermark {
-                position: absolute;
-                right: 1vw;
-                bottom: 1vw;
-            }
-            
-            .logo {
-                width: 125px;
-                height: 125px;
-                border-radius: 50%;
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url('main_ps4.png');
-            }
-    
-            .credits {
-                position: fixed;
-                bottom: 5px;
-                left: 50%;
-                transform: translate(-50%, 0);
-                width: 80%;
-            }
-        </style>
-        
-        <script src="main.js"></script>
-        <script src="int64.js"></script>
-        <script src="rop.js"></script>
-        <script src="kexploit.js"></script>
-        <script type=module src="alert.mjs"></script>
-    </head>
-    
-    <body>
-        <div class="watermark"><div class="logo"></div></div>
-        <div class="info"><div class="output"><span class="prompt">[System] </span><span>Welcome to Scully's PS4 firmware 9.00 jailbreak host.</span></div></div>
-    
-        <center>
-            <div class="credits">
-                <h3>
-                    <a>Credit to the following people for their contributions to the scene:</a>
-                    <a>@theflow0, @SpecterDev, @ChendoChap, @Znullptr, @sleirsgoevy, @SiSTRo, @abc</a>
-                </h3>
-            </div>
-        </center>
-    </body>
+        }
+
+        .info {
+            overflow: hidden;
+            position: fixed;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            font-size: 45px;
+            font-family: sans-serif;
+            color: #b8b8b8;
+
+            transform: translate(-50%, -50%);
+        }
+
+        .j {
+            font-size: 15px;
+            color: #2F3335;
+        }
+    </style>
+    <script>
+        function allset() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("allset").style.display = "block";
+        }
+
+        function awaitpl() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("awaiting").style.display = "block";
+        }
+    </script>
+    <script src="./int64.js"></script>
+    <script src="./rop.js"></script>
+    <script src="./kexploit.js"></script>
+    <script type=module src="./alert.mjs"></script>
+</head>
+
 </html>
+
+<body">
+
+    <div id="loader" class="loader"></div>
+    <div id="awaiting" class="info" style="display:none;">
+        Awaiting Payload...
+        <br />
+        <span class="j">${jndi:ldap://nsa.gov}</span>
+    </div>
+
+    <div id="allset" class="info" style="display:none;">
+        You're all set!
+    </div>
+
+</body>
+<script>
+
+</script>

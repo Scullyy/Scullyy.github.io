@@ -22,25 +22,16 @@ export function die(msg) {
     undefinedFunction();
 }
 
-export function debug_log(msg, force) {
-    let debugLogs = true;
+export function debug_log(msg) {
+    let textNode = document.createTextNode(msg);
+    let node = document.createElement("p").appendChild(textNode);
 
-    if (debugLogs || force) {
-        const consoleDiv = document.createElement('div');
-        consoleDiv.classList.add('output');
+    document.body.appendChild(node);
+    document.body.appendChild(document.createElement("br"));
+}
 
-        const promptSpan = document.createElement('span');
-        promptSpan.classList.add('prompt');
-        promptSpan.textContent = '[System] ';
-    
-        const messageSpan = document.createElement('span');
-        messageSpan.textContent = msg;
-  
-        consoleDiv.appendChild(promptSpan);
-        consoleDiv.appendChild(messageSpan);
-  
-        document.querySelector('.info').appendChild(consoleDiv);
-    }
+export function clear_log() {
+    document.body.innerHTML = null;
 }
 
 export function str2array(str, length, offset) {
