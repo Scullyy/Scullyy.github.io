@@ -1,0 +1,74 @@
+# Stratagem Menu
+
+An interaction menu inspired by the stratagem menu in Helldivers 2.
+
+Preview: https://youtu.be/S6x8RNjn8P8 (The menu does have sound effects in-game but they were not picked up on the video)
+
+## Features
+
+- An arrow key pattern based interaction menu, once the pattern is complete it will trigger.
+
+- You can configure to trigger functions, client events, server events and commands when the pattern is completed.
+
+- Add as many patterns as you want.
+
+- Sound effects while pressing the keys for the pattern and when you enter an incorrect pattern.
+
+- Ability to dynamically add and remove stratagems using exports.
+
+Click [here](https://scullys-development.tebex.io/package/6221272) to purchase the escrowed version or [here](https://scullys-development.tebex.io/package/6221274) to purchase the source.
+
+## Installation Instructions
+
+- Download the resource from [here](https://keymaster.fivem.net/asset-grants).
+
+- Unzip the resource, I personally use [7-Zip](https://www.7-zip.org/).
+
+- Drag the resource into your `resources` folder.
+
+- Add `ensure scully_stratagems` to your `server.cfg` file.
+
+To add stratagems you can optionally put them in the `config.lua` or you can also use exports to dynamically add and remove them from other resources. When triggering stratagems it will also pass the table so if you need additional data for your events or function you can put there.
+
+```lua
+-- Function
+exports.scully_stratagems:addStratagem({
+    id = 'example-1',
+    name = 'Example Stratagem',
+    icon = 'placeholder',
+    pattern = {'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowRight', 'ArrowRight'},
+    func = function()
+        print('Example triggered!')
+    end
+})
+
+-- Client event
+exports.scully_stratagems:addStratagem({
+    id = 'example-1',
+    name = 'Example Stratagem',
+    icon = 'placeholder',
+    pattern = {'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowRight', 'ArrowRight'},
+    event = 'client_event_name_here'
+})
+
+-- Server Event
+exports.scully_stratagems:addStratagem({
+    id = 'example-1',
+    name = 'Example Stratagem',
+    icon = 'placeholder',
+    pattern = {'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowRight', 'ArrowRight'},
+    serverEvent = 'server_event_name_here'
+})
+
+-- Command
+exports.scully_stratagems:addStratagem({
+    id = 'example-1',
+    name = 'Example Stratagem',
+    icon = 'placeholder',
+    pattern = {'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowRight', 'ArrowRight'},
+    command = 'command_here'
+})
+
+-- Remove stratagems using id
+exports.scully_stratagems:removeStratagem('example-1')
+```
