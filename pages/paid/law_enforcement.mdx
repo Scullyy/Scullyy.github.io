@@ -1,0 +1,205 @@
+# Law Enforcement
+
+An easy to use LEO system with all the features you need to get your servers law enforcement up and running!
+
+## Features
+
+- Locale support.
+- Ace permissions and can be used with any discord ace permission script.
+- Department system.
+- Duty system with support for locations or a command.
+- 911 calls.
+- Panic button.
+- Duty blips to show the locations of other on duty law enforcement.
+- GSR system with the ability to wash off gunshot residue in water with an animation.
+- BAC system with a command to set blood alcohol content.
+- Gunshot / shotspotter alerts.
+- Tackle system.
+- Ballistic shield.
+- Hamz CAD support with the ability to run names, plates and send 911 calls.
+- Ability to search for weapons.
+- Cuff system with soft cuff, hard cuff and uncuff options, each one has an individual synced animation and will display cuffs on the player.
+- Cutting pliers weapon which can be used to cut off handcuffs.
+- Skillcheck to escape from being cuffed with a limit of 3 attempts which is reset when uncuffed.
+- Revive option with synced CPR animation.
+- Drag system with individual synced animations while uncuffed, cuffed and dead.
+- Option to force sit a player.
+- Option to place players in / out of vehicles.
+- Jail system with support for seconds and minutes, also includes scenes for entering and exiting jail along with a mugshot scene.
+- Jail jobs with the optional ability to reduce jail time and a cooldown system to prevent spamming the same job.
+- Prop spawner with an option to delete props.
+- Vehicle spawner with an option to delete vehicles, you can also choose which extras and liveries they spawn with and if they should spawn fully upgraded.
+- Loadout options with an option to remove weapons.
+- Outfit options.
+- Left and right alignment support that can be toggled in the menu.
+- Optional logs to log every action a law enforcement officer does.
+- Logs to log how long a law enforcement officer was on duty.
+- Option to disable vanilla cops.
+
+Make sure to read the rest of the documentation for more information on what can be adjusted or disabled. There is also showcases linked at the bottom.
+
+## Installation Instructions
+
+- Download the resource from [here](https://keymaster.fivem.net/asset-grants).
+
+- Unzip the resource, I personally use [7-Zip](https://www.7-zip.org/).
+
+- Drag the resource into your `resources` folder.
+
+- Add `exec scully_lawenforcement.cfg` to the top of your `server.cfg` file.
+
+- Add `ensure scully_lawenforcement` to your `server.cfg` file.
+
+- Add permissions by using the server.cfg or a discord ace permission system, I have included an example for [scully_perms](https://github.com/Scullyy/scully_perms/tree/main) below too.
+
+## Permissions
+
+If you have the permission system enabled then follow one of the below methods.
+
+### Server.cfg method:
+
+server.cfg
+```
+add_ace group.bcso bcso allow
+
+add_principal identifier.discord:530698981920079882 group.bcso # Replace identifier with your own.
+```
+
+### scully_perms method:
+
+server.cfg
+```
+add_ace group.bcso bcso allow
+```
+
+scully_perms/config.lua
+```lua
+Config = {
+    Debug = false,
+    Guild = '', -- Your discord guild ID. (Tutorial: https://github-wiki-see.page/m/manix84/discord_gmod_addon_v2/wiki/Finding-your-Guild-ID-%28Server-ID%29)
+    Token = '', -- Your discord bot token from the discord developer portal. (Tutorial: https://www.writebots.com/discord-bot-token/)
+    Permissions = { -- Your permissions list, can be used as a string or table.
+        ['lspd'] = 'roleid', -- Single role example.
+        ['bcso'] = {'roleid', 'roleid2', 'roleid3'} -- Multiple roles example.
+    }
+}
+```
+
+## Main Config
+
+A lot of options can be disabled or adjusted via the included cfg file.
+```
+setr scully:uniqueKvpId "change-me" # Set to something unique.
+
+set scully:webhook:duty "none" # To enable this log replace "none" with "webhook url"
+set scully:webhook:action "none" # To enable this log replace "none" with "webhook url"
+set scully:webhook:jail "none" # To enable this log replace "none" with "webhook url"
+
+set scully_lawenforcement:enablePermissions "true" # Set to "false" to allow anyone to use the menu.
+set scully_lawenforcement:enableDutyBlips "true" # Set to "false" to disable the duty blips.
+set scully_lawenforcement:cadUrl "https://example.com/cad" # The url for your CAD website.
+set scully_lawenforcement:reviveEvent "scully_lawenforcement:revivePlayer" # Change the client event if you wish to use a different revive system.
+
+setr scully_lawenforcement:menuKeybind "F5" # The keybind to open the LEO Menu.
+setr scully_lawenforcement:locale "en" # The language you wish to display the menu in.
+setr scully_lawenforcement:enablePanicButtonCommand "true" # Set to "false" to disable the panic button command.
+setr scully_lawenforcement:enable911Command "true" # Set to "false" to disable the 911 command.
+setr scully_lawenforcement:enableDutyLocations "true" # Set to "false" if you want to go on-duty using a command instead.
+setr scully_lawenforcement:enableCad "true" # Set to "false" if you don't wish to use the integrated Hamz CAD support.
+setr scully_lawenforcement:enableJailSystem "true" # Set to "false" to disable the jail system.
+setr scully_lawenforcement:enableJailEnterScene "true" # Set to "false" to disable the bus scene.
+setr scully_lawenforcement:enableJailExitScene "true" # Set to "false" to disable the walk out scene.
+setr scully_lawenforcement:enableJailMugshotScene "true" # Set to "false" to disable the mugshot scene.
+setr scully_lawenforcement:enableJailJobs "true" # Set to "false" to disable the jail jobs.
+setr scully_lawenforcement:jailInMinutes "true" # Set to "false" if you wish to jail in seconds instead.
+setr scully_lawenforcement:enableWeaponSearch "true" # Set to "false" to disable the weapon search option.
+setr scully_lawenforcement:enableGSR "true" # Set to "false" to disable the GSR system.
+setr scully_lawenforcement:enableBAC "true" # Set to "false" to disable the BAC system.
+setr scully_lawenforcement:gsrWashTime 10000 # Change to adjust how long it takes to wash gunshot residue off. Default is 10 seconds.
+setr scully_lawenforcement:enablePropSpawner "true" # Set to "false" to disable the prop system.
+setr scully_lawenforcement:enableVehicleSpawner "true" # Set to "false" to disable the vehicle spawner.
+setr scully_lawenforcement:enableLoadoutOptions "true" # Set to "false" to disable the loadout options.
+setr scully_lawenforcement:enableBallisticShield "true" # Set to "false" to disable the ballistic shield options.
+setr scully_lawenforcement:enableOutfitOptions "true" # Set to "false" to disable the outfit menu.
+setr scully_lawenforcement:enableGunshotAlerts "true" # Set to "false" to disable the gunshot / shotspotter alerts.
+setr scully_lawenforcement:enableCuffProps "true" # Set to "false" if you don't want players to have visible handcuffs while cuffed.
+setr scully_lawenforcement:enableCuffKeys "[1, 2, 38, 47, 245, 249]" # Keybinds that are enabled while cuffed.
+setr scully_lawenforcement:enableBreakOutCuffs "true" # Set to "false" if you don't want to allow players to escape or break out of cuffs.
+setr scully_lawenforcement:enableRevive "true" # Set to "false" to disable the revive option.
+setr scully_lawenforcement:enableQuickBinds "true" # Set to "false" to disable the quick bind system.
+setr scully_lawenforcement:quickBinds "['NUMPAD7', 'NUMPAD4', 'NUMPAD1']" # First keybind = Soft Cuff, Second keybind = Hard Cuff, Third keybind = Drag
+setr scully_lawenforcement:enableTackle "true" # Set to "false" to disable the tackle system.
+setr scully_lawenforcement:tackleKeybind "G" # The keybind to tackle another player.
+```
+
+## Data Files
+
+There is a `data` folder included which includes some files which can be used to configure the following:
+
+- Blocked scenarios and scenario types for the vanilla cop disabler.
+- CAD status strings.
+- 10-Codes and alerts used in the alert system.
+- Departments and their locations.
+- Jail location, max distance, mugshot configuration and jail jobs.
+- Loadouts.
+- Weapons used to break cuffs.
+- Seat index table to adjust the seats used in models that do not use the rear seats, required for some Australian vehicles.
+- Department outfits for both male and female.
+- Props that can be spawned in the menu.
+- Department vehicles that can be spawned in the menu, you can also use this to adjust what extras and livery the vehicles should spawn with and if it should spawn fully upgraded.
+- Weapons that are ignored by the gunshot / shotspotter alerts.
+- Weapon labels used in the weapon search feature.
+
+## Exports
+Adjust drag animations:
+```lua
+exports.scully_lawenforcement:customDrag(function(mode)
+    local modes = {
+        ['normal'] = {
+            animation = {'dict', 'anim'},
+            position = {0.0, 0.0, 0.0}
+        },
+        ['cuffed'] = {
+            animation = {'dict', 'anim'},
+            position = {0.0, 0.0, 0.0}
+        }
+    }
+
+    return modes[mode]
+end)
+```
+
+Cuff exports
+```lua
+local scully_lawenforcement = exports.scully_lawenforcement
+
+scully_lawenforcement:togglePlayerCuffs(true) -- true is hard cuff, false is soft cuff. If already cuffed it will uncuff.
+
+scully_lawenforcement:uncuffPlayer() -- Uncuff
+
+scully_lawenforcement:softCuffPlayer() -- Soft cuff
+
+scully_lawenforcement:hardCuffPlayer() -- Hard cuff
+```
+
+Server sided export to update the cheater removal function:
+```lua
+exports.scully_lawenforcement:customCheaterRemoval(function(source, reason)
+    DropPlayer(source, reason)
+end)
+```
+
+## Showcases
+
+- [Duty locations](https://streamable.com/ql2ne9)
+- [Information check and alignment adjustment](https://streamable.com/0xpatl)
+- [Player options](https://streamable.com/5x0an2)
+- [Revive option](https://streamable.com/u74icl)
+- [Drag animation for dead players](https://streamable.com/pzl00n)
+- [Cutting pliers to break off cuffs](https://streamable.com/2g3m9c)
+- [Players cuff POV showing escape prompt](https://streamable.com/v6y035)
+- [BAC command](https://streamable.com/ttz726)
+- [Washing off GSR](https://streamable.com/mrj2qt)
+- [Jail system, cop POV](https://streamable.com/0fy9ew)
+- [Jail system, player POV](https://streamable.com/c6wu4e)
+- [Prop spawner, vehicle spawner, loadouts, ballistic shield and outfits](https://streamable.com/1chlpi)
