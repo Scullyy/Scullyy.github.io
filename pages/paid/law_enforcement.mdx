@@ -195,6 +195,55 @@ exports.scully_lawenforcement:customCheaterRemoval(function(source, reason)
 end)
 ```
 
+## Statebags
+
+Check if a player is a law enforcement officer:
+```lua
+local isLEO = LocalPlayer.state.isLEO
+```
+
+Check if a player is on duty:
+```lua
+local onDuty = LocalPlayer.state.onduty
+```
+
+Check what department a player is in:
+```lua
+local department = LocalPlayer.state.department
+```
+
+Check if a player has gunshot residue:
+```lua
+local hasGSR = LocalPlayer.state.gsr
+```
+
+Check a players blood alcohol content:
+```lua
+local BAC = LocalPlayer.state.BAC
+```
+
+Check if a law enforcement officer is dragging a player:
+```lua
+local dragging = LocalPlayer.state.dragging
+```
+
+Check if a player is being dragged:
+```lua
+local dragged = LocalPlayer.state.dragged
+```
+
+Check if a player is cuffed:
+```lua
+local cuffed = LocalPlayer.state.cuffed
+local hardcuffed = cuffed and cuffed == 'hard'
+local softcuffed = cuffed and cuffed == 'soft'
+```
+
+Disable cuff animations:
+```lua
+LocalPlayer.state:set('disableCuffAnims', true --[[Change to toggle cuff animations]], true)
+```
+
 ## Showcases
 
 - [Duty locations](https://streamable.com/ql2ne9)
