@@ -42,10 +42,46 @@ Click [here](https://scullys-development.tebex.io/package/5090377) to purchase t
 
 - Add `ensure scully_holster` to your `server.cfg` file.
 
-To give someone permissions add the following to your `server.cfg` file, please don't ask me about other permission systems as I will not support them.
+## Permissions (Optional)
 
+If you have the permission system enabled then follow one of the below methods if you have UseAcePerm set to true.
+
+### Server.cfg method:
+
+server.cfg
 ```
 add_ace group.holster group.holster allow
 
 add_principal identifier.discord:530698981920079882 group.holster # Replace identifier with your own.
+```
+
+### scully_perms method:
+
+server.cfg
+```
+add_ace group.holster group.holster allow
+```
+
+scully_perms/config.lua
+```lua
+Config = {
+    Debug = false,
+    Guild = '', -- Your discord guild ID. (Tutorial: https://github-wiki-see.page/m/manix84/discord_gmod_addon_v2/wiki/Finding-your-Guild-ID-%28Server-ID%29)
+    Token = '', -- Your discord bot token from the discord developer portal. (Tutorial: https://www.writebots.com/discord-bot-token/)
+    Permissions = { -- Your permissions list, can be used as a string or table.
+        ['holster'] = {'roleid', 'roleid2', 'roleid3'} -- Multiple roles example.
+    }
+}
+```
+
+## Exports
+
+Change weapon without doing the holster animation:
+```lua
+exports.scully_holster:updateWeapon(hash)
+```
+
+Disable holster animations:
+```lua
+exports.scully_holster:disableHolster(true) -- Set to false to re-enable them
 ```
