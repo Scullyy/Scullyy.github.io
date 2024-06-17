@@ -112,6 +112,7 @@ setr scully_lawenforcement:menuKeybind "F5" # The keybind to open the LEO Menu.
 setr scully_lawenforcement:locale "en" # The language you wish to display the menu in.
 setr scully_lawenforcement:enablePanicButtonCommand "true" # Set to "false" to disable the panic button command.
 setr scully_lawenforcement:enable911Command "true" # Set to "false" to disable the 911 command.
+setr scully_lawenforcement:enableDepartmentCommand "true" # Set to "false" to disable the department command.
 setr scully_lawenforcement:enableDutyLocations "true" # Set to "false" if you want to go on-duty using a command instead.
 setr scully_lawenforcement:enableForceInactiveOffDuty "false" # Set to "true" if you want AFK players to automatically go off-duty after 10 minutes.
 setr scully_lawenforcement:enableCad "true" # Set to "false" if you don't wish to use the integrated Hamz CAD support.
@@ -161,6 +162,18 @@ There is a `data` folder included which includes some files which can be used to
 - Weapon labels used in the weapon search feature.
 
 ## Exports
+
+Change notification system:
+```lua
+exports.scully_lawenforcement:customNotify(function(type, text)
+    local color = type == 'error' and '~r~' or (type == 'success' and '~g~' or '~w~')
+
+    BeginTextCommandThefeedPost('STRING')
+    AddTextComponentSubstringPlayerName(('%s%s'):format(color, text))
+    EndTextCommandThefeedPostTicker(true, true)
+end)
+```
+
 Adjust drag animations:
 ```lua
 exports.scully_lawenforcement:customDrag(function(mode)
