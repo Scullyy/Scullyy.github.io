@@ -43,9 +43,11 @@ TriggerClientEvent('scully_sling:forceRefresh', source)
 
 Change notification system:
 ```lua
-exports.scully_sling:customNotif(function(text)
+exports.scully_sling:customNotify(function(type, text)
+    local color = type == 'error' and '~r~' or (type == 'success' and '~g~' or '~w~')
+
     BeginTextCommandThefeedPost('STRING')
-    AddTextComponentSubstringPlayerName(text)
+    AddTextComponentSubstringPlayerName(('%s%s'):format(color, text))
     EndTextCommandThefeedPostTicker(true, true)
 end)
 ```
