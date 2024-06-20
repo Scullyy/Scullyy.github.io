@@ -26,6 +26,17 @@ Click [here](https://scullys-development.tebex.io/package/5068532) to purchase t
 
 - Add `ensure scully_sling` to your `server.cfg` file.
 
+## Events
+
+You can refresh the sling using the below event:
+```lua
+-- Client sided
+TriggerEvent('scully_sling:forceRefresh')
+
+-- Server sided
+TriggerClientEvent('scully_sling:forceRefresh', source)
+```
+
 ## Bridge Information
 
 This information is intended for individuals who need a bridge for their inventory system, which operates on items instead of weapons. It is specifically designed for those with a basic understanding of Lua and the functioning of their inventory. Below, you will find details on the functions that can be overridden to transmit the essential information required for the sling to seamlessly integrate with your inventory system.
