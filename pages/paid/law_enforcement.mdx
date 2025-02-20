@@ -194,17 +194,38 @@ exports.scully_lawenforcement:customDrag(function(mode)
 end)
 ```
 
-Cuff exports
+Nearby player interaction exports
 ```lua
 local scully_lawenforcement = exports.scully_lawenforcement
 
-scully_lawenforcement:togglePlayerCuffs(true) -- true is hard cuff, false is soft cuff. If already cuffed it will uncuff.
+scully_lawenforcement:checkGSR() -- Check for gunshot residue
+
+scully_lawenforcement:checkBAC() -- Check blood alcohol content
+
+scully_lawenforcement:togglePlayerCuffs(true --[[Should hardcuff?]]) -- Toggle cuffs
 
 scully_lawenforcement:uncuffPlayer() -- Uncuff
 
 scully_lawenforcement:softCuffPlayer() -- Soft cuff
 
 scully_lawenforcement:hardCuffPlayer() -- Hard cuff
+
+scully_lawenforcement:revivePlayer() -- Revive
+
+scully_lawenforcement:togglePlayerDrag() -- Toggle drag
+
+scully_lawenforcement:forceSitPlayer() -- Make sit
+
+scully_lawenforcement:seatPlayerInVehicle() -- Place in / out of vehicle
+```
+
+Jail exports
+```lua
+local scully_lawenforcement = exports.scully_lawenforcement
+
+scully_lawenforcement:jailPlayer() -- Jail nearby player
+
+scully_lawenforcement:unjailPlayer(1 --[[Server ID]]) -- Unjail player using server ID
 ```
 
 Server sided export to update the cheater removal function:
