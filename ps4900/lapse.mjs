@@ -1866,7 +1866,7 @@ kexploit().then(() => {
 setTimeout(PayloadLoader("aio_patches.bin"),500);
 log("AIO Fixes Applied!");
 //Load Homebrew Enabler
-setTimeout(PayloadLoader("hen.bin"),500);
+setTimeout(PayloadLoader("goldhen.bin"),500);
 log("HEN Loaded!");
 //Load ps4debug
 setTimeout(PayloadLoader("ps4debug.bin"),500);
