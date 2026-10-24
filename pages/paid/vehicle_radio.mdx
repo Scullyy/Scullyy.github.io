@@ -1,0 +1,289 @@
+# Scully Vehicle Radio
+
+Replaces the GTA radio wheel with a smooth station picker made of spinning records, shows the song and artist that's playing, and lets you control which stations can be heard where, including bad signal areas with static and drop outs.
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Requirements](#requirements)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Data Files](#data-files)
+6. [Customising](#customising)
+7. [Keybinds & Commands](#keybinds--commands)
+8. [Exports](#exports)
+9. [Locales](#locales)
+10. [Support](#support)
+
+## Features
+
+- Hold the radio key in a vehicle to open the picker, move the mouse (or use the next / previous station keys) to scroll through the stations and let go to tune in.
+- Every station gets its own icon and colour, with a spinning record, a tuning dial and a live equaliser for the station that's playing.
+- Tap the next / previous station keys to skip without opening the picker.
+- Shows the song name and artist that's playing, in the picker and in a now playing popup when the station or song changes.
+- You can add your custom / add-on radio stations.
+- Turn stations off everywhere, or only in certain areas (native zones or coords), or limit an area to a few stations.
+- Radio static system that works with areas mentioned above, every tunnel and parking garage on the map and bad weather. You can disable each one or change how much each one impacts your radio.
+- Optional static when scrolling between stations, like tuning a real radio.
+- An export to add interference from your own resources, for weather or events.
+- You can set custom station labels.
+- You can disable it for certain vehicle classes.
+- Optional driver only mode.
+- Configurable UI size / scale.
+- Locale support.
+
+## Requirements
+
+- A FiveM server on a latest recommended build.
+
+The resource manifest declares:
+
+```lua
+dependencies {
+    '/server:35245' -- Server artifacts / build number
+}
+```
+
+## Installation
+
+1. Download the resource from your [FiveM Asset Grants](https://portal.cfx.re/assets/granted-assets).
+
+2. Extract `scully_vehicleradio` into your server's `resources` folder.
+
+3. Move `scully_vehicleradio.cfg` out of the resource and place it next to your `server.cfg`.
+
+4. Add this to the top of your `server.cfg`:
+
+```cfg
+exec scully_vehicleradio.cfg
+```
+
+5. Start the resource:
+
+```cfg
+ensure scully_vehicleradio
+```
+
+6. Restart the server.
+
+> **Important:** The resource intentionally throws an error if `scully_vehicleradio.cfg` is left inside the resource folder. Copy it next to `server.cfg`, then delete it from the resource. This exists so the step can't be skipped by accident.
+
+## Configuration
+
+Server-wide settings live in `scully_vehicleradio.cfg`. Station icons and colors are configured in `data/stations.lua`.
+
+### Core
+
+```cfg
+setr scully_vehicleradio:locale "en"
+setr scully_vehicleradio:scale 100
+```
+
+| Setting | Description |
+| --- | --- |
+| `locale` | Locale file to load from `locales/`. See [Locales](#locales). |
+| `scale` | UI scale in percent. `100` is the default size. |
+
+### Controls
+
+```cfg
+setr scully_vehicleradio:wheelControl 85
+setr scully_vehicleradio:nextControl 81
+setr scully_vehicleradio:previousControl 82
+setr scully_vehicleradio:sensitivity 1.6
+```
+
+| Setting | Description |
+| --- | --- |
+| `wheelControl` | [Control ID](https://docs.fivem.net/docs/game-references/controls/) held to open the picker. `85` is the default radio wheel key (Q). |
+| `nextControl` | Control that skips to the next station. `81` is the default (.). |
+| `previousControl` | Control that skips to the previous station. `82` is the default (,). |
+| `sensitivity` | How fast moving the mouse scrolls through the stations. |
+
+These are control IDs rather than keys, so they follow whatever the player has bound to the GTA radio controls in their settings.
+
+### Behaviour
+
+```cfg
+setr scully_vehicleradio:driverOnly "false"
+setr scully_vehicleradio:hideDefaultPopup "true"
+setr scully_vehicleradio:showToast "true"
+setr scully_vehicleradio:toastTime 3000
+setr scully_vehicleradio:showOff "true"
+```
+
+| Setting | Description |
+| --- | --- |
+| `driverOnly` | `"true"` lets only the driver change the station. |
+| `hideDefaultPopup` | `"false"` keeps the default GTA station name popup. |
+| `showToast` | `"false"` hides the now playing popup. |
+| `toastTime` | How long the now playing popup stays on screen in milliseconds. |
+| `showOff` | `"false"` removes the Radio Off option from the picker. |
+
+### Now playing
+
+```cfg
+setr scully_vehicleradio:showTrack "true"
+setr scully_vehicleradio:trackToast "true"
+```
+
+| Setting | Description |
+| --- | --- |
+| `showTrack` | Show the song and artist in the picker and the now playing popup. |
+| `trackToast` | Also show the now playing popup when the song changes, not only when the station changes. |
+
+Talk shows and adverts have no song name, so they show as "Talk / adverts".
+
+### Static & interference
+
+```cfg
+setr scully_vehicleradio:staticVolume 35
+setr scully_vehicleradio:tuningStatic "true"
+setr scully_vehicleradio:dropouts "true"
+```
+
+| Setting | Description |
+| --- | --- |
+| `staticVolume` | Volume of the static from `0` to `100`. `0` turns all static off. |
+| `tuningStatic` | Play a short burst of static when scrolling through stations. |
+| `dropouts` | Let the station cut out for a moment in bad signal areas. `"false"` keeps only the static. |
+
+## Data Files
+
+| File | Purpose |
+| --- | --- |
+| `stations.lua` | Station icons and colours, stations turned off everywhere, areas with their own stations or a bad signal, custom labels and blocked vehicle classes. |
+
+## Customising
+
+### Stations (data/stations.lua)
+
+```lua
+return {
+    defaultIcon = 'radio',
+    defaultColor = '#8d99ae',
+
+    disabled = { 'RADIO_19_USER', 'RADIO_36_AUDIOPLAYER' },
+
+    blockedClasses = {},
+
+    labels = {},
+
+    interiorInterference = 0.6,
+
+    weatherInterference = {
+        [`THUNDER`] = 0.7,
+        [`SNOW`] = 0.7,
+        [`BLIZZARD`] = 0.7,
+        [`SNOWLIGHT`] = 0.7,
+        [`XMAS`] = 0.7,
+        [`HALLOWEEN`] = 1.0
+    },
+
+    areas = { ... },
+
+    stations = {
+        RADIO_01_CLASS_ROCK = { icon = 'guitar-pick', color = '#ef5350' },
+        RADIO_05_TALK_01 = { icon = 'message-circle', color = '#8d99ae', enabled = false },
+        ...
+    }
+}
+```
+
+| Option | Description |
+| --- | --- |
+| `defaultIcon` / `defaultColor` | Used for stations not listed in `stations`, such as addon stations. |
+| `disabled` | Stations turned off everywhere. Setting `enabled = false` on a station does the same. |
+| `blockedClasses` | GTA [vehicle classes](https://docs.fivem.net/natives/?_0x29439776AAA00A62) where this resource does nothing and the default GTA radio is left alone, e.g. `{ 18 }` for emergency vehicles. |
+| `labels` | Custom labels, for example. `RADIO_01_CLASS_ROCK = 'Rock Radio'`. |
+| `interiorInterference` | Interference while driving inside an interior (tunnels, parking garages, etc...), from `0.0` (none) to `1.0`. |
+| `areas` | Areas with their own station list and / or a bad signal, see below. |
+| `stations` | Icon ([Tabler icon](https://tabler.io/icons) name), color and `enabled` for each station. |
+
+### Areas
+
+Every area the player is in applies at once. If you're tuned to a station that can't be heard where you're driving, the radio moves to one that can and shows "No signal".
+
+```lua
+areas = {
+    {
+        label = 'Mount Chiliad',
+        coords = vec3(501.0, 5604.0, 797.0),
+        radius = 650.0,
+        minHeight = 450.0,
+        only = { 'RADIO_05_TALK_01', 'RADIO_11_TALK_02' },
+        interference = 0.55
+    },
+    {
+        label = 'Fort Zancudo',
+        zones = { 'ARMYB' },
+        interference = 0.9
+    }
+},
+```
+
+| Option | Description |
+| --- | --- |
+| `label` | Unique label for the area. |
+| `zones` | Native [zone names](https://docs.fivem.net/docs/game-references/zones/) from `GetNameOfZone`, e.g. `{ 'PALETO', 'PALCOV' }`. |
+| `coords` / `radius` | A circle instead of, or as well as, zones. |
+| `minHeight` | Only applies above this height, handy for mountain tops. |
+| `disabled` | Stations that can't be picked up here. |
+| `only` | When set, only these stations can be picked up here. |
+| `interference` | `0.0` to `1.0`. Static noise and signal drop outs...if in multiple areas it will use the largest interference. |
+
+Station names are the GTA ones, for example: `RADIO_01_CLASS_ROCK`. `exports.scully_vehicleradio:getStations()` lists the ones available where you are.
+
+## Keybinds & Commands
+
+| Control | Purpose |
+| --- | --- |
+| Radio wheel (`Q`) | Hold to open the picker, release to tune. |
+| Next station (`.`) | Skip to the next station. |
+| Previous station (`,`) | Skip to the previous station. |
+
+While the picker is open, move the mouse left and right to pick a station, or tap the next / previous keys to move one at a time.
+
+## Exports
+
+### Client exports
+
+| Export | Description |
+| --- | --- |
+| `isOpen()` | `true` while the picker is open. |
+| `getStations()` | Every station in the picker (`id`, `label`, `icon`, `color`). |
+| `setStation(id)` | Tunes to a station by name (`'OFF'` turns the radio off). Returns `false` when the station isn't in the list. |
+| `setDisabled(state)` | Turns the picker off and leaves the default GTA radio alone while `true` (per resource). |
+| `getCurrentTrack()` | The song playing: `{ station, song, artist }`. `song` is `nil` for talk shows and adverts. |
+| `setInterference(value)` | Adds interference from `0.0` to `1.0` everywhere (per resource), e.g. during a storm. `0` removes it. |
+| `getArea()` | What applies where the player is: `labels`, `disabled`, `only` and `interference`. |
+
+```lua
+exports.scully_vehicleradio:setStation('RADIO_02_POP')
+
+-- Disable the picker and use the default radio.
+exports.scully_vehicleradio:setDisabled(true)
+
+-- Set your own custom interference.
+exports.scully_vehicleradio:setInterference(0.4)
+
+local track = exports.scully_vehicleradio:getCurrentTrack()
+
+if track and track.song then
+    print(('%s - %s'):format(track.song, track.artist))
+end
+```
+
+## Locales
+
+Locale files go in `locales/` and the active one is set with:
+
+```cfg
+setr scully_vehicleradio:locale "en"
+```
+
+To add a language, copy an existing locale file and translate its values.
+
+## Support
+
+For support, updates and community discussion, join the Scully's Development community: [https://discord.gg/scully](https://discord.gg/scully)
