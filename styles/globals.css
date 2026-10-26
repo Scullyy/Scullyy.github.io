@@ -142,7 +142,16 @@ html[class~=dark] footer, html[class~=dark] footer > div { background-color: var
 .nextra-toc a.nx-font-semibold { color: var(--sd-accent) !important; }
 .nextra-toc p.nx-font-semibold { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--sd-text) !important; }
 .nextra-toc .nx-border-t { border-color: var(--sd-border) !important; }
-.nextra-toc .nx-sticky { box-shadow: none !important; }
+.nextra-toc .nx-sticky {
+  position: static !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  margin-top: 1.5rem !important;
+  padding-top: 1.25rem !important;
+  padding-bottom: 2rem !important;
+}
+
+.nextra-sidebar-container li.active > ul:has(> li > a[href^="#"]) { display: none !important; }
 
 /* ---------- Content ---------- */
 

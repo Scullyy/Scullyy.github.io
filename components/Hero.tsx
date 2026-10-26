@@ -12,8 +12,7 @@ export function Hero() {
           Everything you need to <span className="sd-gradient">ship it</span>.
         </h1>
         <p>
-          Installation guides, configuration references and fixes for common Cfx.re Portal and escrow errors for every
-          resource from Scully's Development.
+          Installation guides, configuration references and fixes for common issues for resources provided by Scully's Development.
         </p>
         <div className="sd-actions">
           <a href="/paid" className="sd-btn sd-btn-primary">Get started →</a>
