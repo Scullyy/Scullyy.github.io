@@ -1,0 +1,672 @@
+# Radio V3
+
+A modern handheld radio for pma-voice with everything your server needs for law enforcement, medic and civilian radio comms.
+
+## Table of Contents
+
+1. [Features](#features)
+2. [Requirements](#requirements)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Data Files](#data-files)
+6. [Customising](#customising)
+7. [Keybinds & Commands](#keybinds--commands)
+8. [Exports](#exports)
+9. [Locales](#locales)
+10. [Support](#support)
+
+---
+
+## Features
+
+### Radio & UI
+- Touchscreen radio with apps for tuning, channels, favorites, listening in, the player list and settings.
+- Custom radio props, animations and item images included.
+- Radio prop held in hand while the radio is open, with its screen also shown on the props screen.
+- Movable and resizable radio and radio player list that saves.
+- 18 preset colors, custom color picker, 4 finishes and 24 designs.
+- Add-on design pack support.
+- Selectable talk animations, with support for adding custom animations.
+- Radio notifications that pop up on the radio UI.
+
+### Channels
+- Channels from 1 to 999.99 with ability to add custom labels.
+- Channels app with a list of configurable categories and channels.
+- Channel locking by state bag, job/gang grade or ACE permissions, with an optional on duty check.
+- Add up to 12 favorite channels.
+- Automatic rejoin of the last channel when you power the radio on. (even after a server restart)
+- You can listen in on up to 4 other channels, basically meaning you can be in up to 5 channels at once. You can also adjust this.
+- Radio player list showing names, callsigns and who is talking on your channel and the channels you're listening in on.
+- Editable names and callsigns (can be disabled in config, recommended for framework users), and muting of other players.
+- Optional talkover protection with a busy tone.
+- Optional transmission timeout to limit how long people can speak.
+
+### Emergency
+- Panic button on configurable emergency channels.
+- Alerts with a sound, radio notification and flashing map blip for everyone on the channel and anyone listening in.
+- Configurable cooldown and blip duration.
+
+### Signal
+- Voice quality based on distance.
+- Worse signal in interiors, tunnels, under water, in bad weather and in configurable areas.
+- Better signal when high up or in a vehicle.
+- Optional, can be disabled for perfect audio everywhere.
+
+### Jammers
+- Placeable signal jammers that block every channel except the ones whoever placed it allow.
+- Item or command placement, with a green or red preview for valid and invalid spots.
+- Jammer control screen with power, range and allowed channels.
+- Pick up jammers with `G`, or you can also enable ox_target instead. (Support for your own custom interactions via export too)
+- Destructible jammers with bullet impacts and sparks.
+- Permanent jammers set in the config.
+
+### Battery
+- Battery drains while powered on, drains faster while talking.
+- Sitting in a vehicle charges your radio.
+- Battery saved per radio item, or per player if you don't use the item system.
+- Power bank items that charge radios over time and recharge in vehicles.
+- Optional, can be disabled.
+
+### Items & Frameworks
+- Optional radio item, with optional items for every color and design.
+- ox_inventory and qb-inventory support.
+- QBCore, Qbox, ESX and standalone support.
+
+### Exclusive Law Enforcement App
+- Exclusive to [scully_lawenforcement](https://scullys-development.net/paid/law_enforcement) customers.
+- Duty toggle and on duty list.
+- 10-code statuses shown on the radio player list.
+- Automatic wellness check alerts for officers that haven't moved for a while.
+
+### Other
+- Rebindable keybinds.
+- Exports and events.
+- Locale support.
+
+---
+
+## Requirements
+
+- A FiveM server with **OneSync** enabled.
+- Server build set to the latest recommended build.
+- [pma-voice](https://github.com/AvarianKnight/pma-voice)
+
+The resource manifest declares:
+
+```lua
+dependencies {
+    '/server:35245', -- Server artifacts / build number
+    '/onesync',
+    'pma-voice'
+}
+```
+
+Optional:
+
+- QBCore, Qbox or ESX, for jobs and character names.
+- ox_inventory or qb-inventory, if you want the radio to be an item.
+- [scully_lawenforcement](/paid/law_enforcement), for the police app.
+
+---
+
+## Installation
+
+1. Download the resource from your [FiveM Asset Grants](https://portal.cfx.re/assets/granted-assets).
+2. Extract `scully_radio3` into your server's `resources` folder.
+3. Move `scully_radio3.cfg` **out of the resource** and place it next to your `server.cfg`.
+4. Add this to the **top** of your `server.cfg`:
+
+   ```
+   exec scully_radio3.cfg
+   ```
+
+5. Start the resource:
+
+   ```
+   ensure pma-voice
+   ensure scully_radio3
+   ```
+
+7. If you want the radio to be an item, add the items to your inventory (see [Items](#items)).
+8. Restart your server.
+
+---
+
+## Permissions
+
+Private channels and jammers can be locked by state bag, job, gang or ace permission. If you use aces, add them to your `server.cfg`:
+
+```
+add_ace group.police group.police allow
+add_ace group.ems group.ems allow
+add_ace group.police group.jammer allow
+```
+
+---
+
+## Configuration
+
+Server-wide settings live in `scully_radio3.cfg`.
+
+### Core
+
+```
+setr scully_radio3:uniqueKvpId "change-me"
+setr scully_radio3:locale "en"
+```
+
+| Setting | Description |
+|---|---|
+| `uniqueKvpId` | Something unique such as your server name, it's used to save each player's radio settings. |
+| `locale` | The language of the radio, from the `locales` folder. |
+
+### Controls
+
+```
+setr scully_radio3:openCommand "radio"
+setr scully_radio3:openKey "U"
+setr scully_radio3:nextChannelKey "PAGEUP"
+setr scully_radio3:previousChannelKey "PAGEDOWN"
+setr scully_radio3:swapChannelKey ""
+setr scully_radio3:scanKey ""
+setr scully_radio3:powerKey ""
+setr scully_radio3:volumeUpKey ""
+setr scully_radio3:volumeDownKey ""
+```
+
+| Setting | Description |
+|---|---|
+| `openCommand` | Command to open the radio, set to `""` to turn it off. |
+| `openKey` | Key to open the radio. ([key names](https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/)) |
+| `nextChannelKey` | Goes to the next favorite channel, or the next channel if the player has no favorites. |
+| `previousChannelKey` | Goes to the previous favorite channel, or the previous channel if the player has no favorites. |
+| `swapChannelKey` | Jumps back to the last channel the player was on. |
+| `scanKey` | Turns listening to extra channels on and off. |
+| `powerKey` | Turns the radio on and off. |
+| `volumeUpKey` | Turns the volume up. |
+| `volumeDownKey` | Turns the volume down. |
+
+Leave a key empty to let players pick their own in their GTA key settings.
+
+### Items & looks
+
+```
+setr scully_radio3:useItem "false"
+setr scully_radio3:itemColors "false"
+setr scully_radio3:allowColors "true"
+setr scully_radio3:allowCustomColors "true"
+setr scully_radio3:enablePrideRadios "true"
+setr scully_radio3:defaultColor "graphite"
+setr scully_radio3:enableEditing "true"
+```
+
+| Setting | Description |
+|---|---|
+| `useItem` | Set to `"true"` so players need a radio item to use the radio. |
+| `itemColors` | Set to `"true"` to have a separate item for every color and design (`radio_blue`, `radio_woodland` and so on). The radio is then always the color of the item. |
+| `allowColors` | Set to `"false"` to stop players changing their radio's color. |
+| `allowCustomColors` | Set to `"false"` to only allow the preset colors. |
+| `enablePrideRadios` | Set to `"false"` to remove the pride radios. |
+| `defaultColor` | The color new players start with, a preset name from `data/colors.lua` or a hex color like `#1f5fd1`. |
+| `enableEditing` | Set to `"false"` to stop players changing the name and callsign others see on the radio. |
+
+### Channels
+
+```
+setr scully_radio3:minFrequency 1
+setr scully_radio3:maxFrequency 999.99
+setr scully_radio3:maxFavorites 12
+setr scully_radio3:maxScanChannels 4
+setr scully_radio3:rememberChannel "true"
+setr scully_radio3:talkoverProtection "true"
+setr scully_radio3:transmitTimeout 60
+```
+
+| Setting | Description |
+|---|---|
+| `minFrequency` | The lowest channel players can join. |
+| `maxFrequency` | The highest channel players can join. |
+| `maxFavorites` | How many favorite channels each player can save. |
+| `maxScanChannels` | How many other channels a player can listen to at the same time, set to `0` to turn it off. |
+| `rememberChannel` | Set to `"false"` if the radio shouldn't go back to the last channel when it's turned on. |
+| `talkoverProtection` | Stops players talking over someone who is already talking, they hear a busy tone instead. You can turn this on or off for each group of channels in `data/channels.lua`. |
+| `transmitTimeout` | Cuts players off after talking for this many seconds, so a stuck key doesn't block the channel. Set to `0` to turn it off. |
+
+### Panic button
+
+```
+setr scully_radio3:enableEmergency "true"
+setr scully_radio3:emergencyCooldown 30
+setr scully_radio3:emergencyBlipTime 60
+```
+
+| Setting | Description |
+|---|---|
+| `enableEmergency` | Set to `"false"` to remove the panic button. It only works on channels you allow it on in `data/channels.lua`. |
+| `emergencyCooldown` | How many seconds a player has to wait before pressing it again. |
+| `emergencyBlipTime` | How many seconds the blip stays on the map. |
+
+### Signal & jammers
+
+```
+setr scully_radio3:enableSignal "true"
+setr scully_radio3:enableJammers "true"
+```
+
+| Setting | Description |
+|---|---|
+| `enableSignal` | Set to `"false"` to make everyone sound perfect no matter where they are. Tweak how signal works in `data/signal.lua`. |
+| `enableJammers` | Set to `"false"` to remove jammers. Set them up in `data/jammers.lua`. |
+
+### Battery
+
+```
+setr scully_radio3:enableBattery "true"
+setr scully_radio3:batteryLife 120
+setr scully_radio3:transmitDrain 3
+setr scully_radio3:vehicleCharging "true"
+setr scully_radio3:chargeTime 10
+```
+
+| Setting | Description |
+|---|---|
+| `enableBattery` | Set to `"false"` so radios never run out of charge. |
+| `batteryLife` | How many minutes a full battery lasts while the radio is on. |
+| `transmitDrain` | How many times faster the battery drains while talking. |
+| `vehicleCharging` | Set to `"false"` to stop radios and power banks charging in vehicles. |
+| `chargeTime` | How many minutes it takes to fully charge, in a vehicle or from a power bank. |
+
+With radio items, every radio keeps its own charge, so it stays the same if it's dropped, traded or swapped. Without items, the charge is saved for each player.
+
+### Hands & animations
+
+```
+setr scully_radio3:holdAnimation "true"
+setr scully_radio3:allowNoTalkAnimation "true"
+setr scully_radio3:screenMirror "true"
+setr scully_radio3:disableWhenDead "true"
+```
+
+| Setting | Description |
+|---|---|
+| `holdAnimation` | Set to `"false"` so players don't hold a radio while it's open. |
+| `allowNoTalkAnimation` | Set to `"false"` to remove the "None" talk animation, so everyone has to use one. |
+| `screenMirror` | Set to `"false"` to stop the radio's screen showing on the radio in your hand. Only see the screen on the UI. |
+| `disableWhenDead` | Set to `"false"` to let dead players keep using their radio. |
+
+---
+
+## Data Files
+
+| File | Purpose |
+|---|---|
+| `data/channels.lua` | Private channels and channel names. |
+| `data/signal.lua` | How distance, buildings, weather and areas affect how clear people sound. |
+| `data/jammers.lua` | Who can use jammers, their range, and jammers that are always on the map. |
+| `data/animations.lua` | Talk animations. |
+| `data/colors.lua` | The preset colors. |
+| `data/designs.lua` | The preset designs. |
+| `data/leo.lua` | The Police app's 10-codes and wellness checks. |
+
+---
+
+## Customising
+
+### Department channels (`data/channels.lua`)
+
+Group channels together for each department and lock them so only that department can join. Each group shows up on the radio with its own name, icon and color, and lists its named channels.
+
+```lua
+return {
+    names = {
+        [10] = 'Civ Main',
+        [100] = 'Taxi'
+    },
+
+    zones = {
+        {
+            label = 'Law Enforcement',
+            icon = 'shield-star',
+            color = '#3b82f6',
+            restrict = { 1, 5 },
+            access = {
+                states = { isLEO = true },
+                jobs = { police = 0, sheriff = 0 },
+                aces = { 'group.police' },
+                onDuty = false
+            },
+            emergency = true,
+            channels = {
+                { frequency = 1, label = 'Dispatch' },
+                { frequency = 2, label = 'Patrol 1' }
+            }
+        }
+    }
+}
+```
+
+| Option | Description |
+|---|---|
+| `names` | Names for public channels anyone can join, like "Taxi" on 100. |
+| `zones` | The department groups. |
+| `label` | The group's name on the radio. |
+| `icon` | A [Tabler icon](https://tabler.io/icons) name. |
+| `color` | The group's color on the radio. |
+| `restrict` | The first and last channel only this group can join, `{ 1, 5 }` locks channels 1 to 5. |
+| `access.states` | Player state bags that let someone in, like `isLEO`. |
+| `access.jobs` | Jobs or gangs that can join, with the lowest grade allowed. |
+| `access.aces` | Ace permissions that let someone in. |
+| `access.onDuty` | Set to `true` so players have to be on duty. |
+| `emergency` | Set to `true` to allow the panic button on these channels. |
+| `talkover` | Optional, turns talk over protection on or off just for this group. |
+| `channels` | The named channels in this group. |
+
+Players only need to match one of the `access` options to get in.
+
+### Signal (`data/signal.lua`)
+
+Every player has a signal strength, and when someone talks, how far apart you are plus both of your signals decides how clear they sound.
+
+| Option | Description |
+|---|---|
+| `range.clear` | People sound perfect up to this distance. |
+| `range.max` | People sound their worst from this distance. |
+| `range.cutOff` | Set to `true` so people past the max distance can't be heard at all. |
+| `range.heightBoost` | Being high up (rooftops, mountains, helicopters) increases the range. |
+| `vehicleBoost` | How much better your signal is in a vehicle, `0.25` is 25% better. |
+| `interiorInterference` | How bad signal is inside buildings and tunnels, from `0.0` (no effect) to `1.0` (no signal). |
+| `underwaterInterference` | How bad signal is under water. |
+| `weatherInterference` | How bad signal is in each type of weather. |
+| `areas` | Bad signal spots, by GTA zone name or a point and radius. |
+| `breakup` | Below this signal, voices start dropping out. Set to `0.0` to turn it off. |
+
+### Jammers (`data/jammers.lua`)
+
+Jammers block every radio around them apart from the channels you allow through. Players place them with the jammer item or command, then walk up to them to open the jammer's own screen, where they can turn it on and off, change its range and pick the allowed channels. You can also interact with the jammer to pick it back up. Anyone can shoot a jammer to destroy it.
+
+```lua
+return {
+    model = `scully_radio3_jammer`,
+    item = 'radio_jammer',
+    command = 'jammer',
+    target = false,
+
+    permission = {
+        states = { isLEO = true },
+        jobs = { police = 0, sheriff = 0 },
+        aces = { 'group.jammer' }
+    },
+
+    range = { min = 10.0, max = 150.0, step = 5.0, default = 40.0 },
+
+    defaults = {
+        { coords = vec4(0.0, 0.0, 0.0, 0.0), range = 120.0, allowed = { 1, 2 }, prop = true }
+    }
+}
+```
+
+| Option | Description |
+|---|---|
+| `model` | The jammer prop. |
+| `item` | The jammer item, set to `false` to place jammers without one. While it's set, placing a jammer always uses up the item, even with the command, and picking a jammer up gives it back. |
+| `command` | The command to place a jammer, set to `false` to turn it off. |
+| `target` | Set to `true` to use and pick up jammers with ox_target instead of the help text. |
+| `permission` | Who can place and use jammers. Players can always use the jammers they placed themselves. |
+| `range` | The smallest, biggest and starting range in meters. |
+| `defaults` | Jammers that are always on the map, like around a prison. These can't be picked up but they can be destroyed. Set `prop = false` to make one invisible (it can't be destroyed then). |
+
+When placing a jammer, look where you want it to go. It shows green when it can go there and red when the ground isn't flat or it's too far away.
+
+### Talk animations (`data/animations.lua`)
+
+Players pick how they hold the radio when they talk in the radio's settings. You can add your own animations, and set exactly where the radio sits in the hand for each one.
+
+```lua
+return {
+    {
+        name = 'handheld',
+        label = 'Handheld',
+        dict = 'anim@scully_radio',
+        anim = 'handheld',
+        flag = 49,
+        prop = true,
+        attach = { ... }
+    },
+    { name = 'ear', label = 'Ear', dict = 'cellphone@', anim = 'cellphone_call_listen_base', flag = 49, prop = true },
+    { name = 'default', label = 'Default / Shoulder', pma = true },
+    { name = 'none', label = 'None', none = true }
+}
+```
+
+| Option | Description |
+|---|---|
+| `name` | A unique name for the animation. |
+| `label` | The name players see in the settings. |
+| `dict` / `anim` | The animation to play while talking. |
+| `flag` | `49` only animates the upper body, so players can still walk. |
+| `prop` | Set to `true` to hold the radio while talking. |
+| `attach.bone` | Which hand holds the radio, `60309` is the left hand and `28422` is the right. |
+| `attach.offset` | Moves the radio in the hand. |
+| `attach.rotation` | Turns the radio in the hand. |
+| `pma` | Uses pma-voice's own radio animation. |
+| `none` | No animation. |
+
+The first animation in the list is the one new players start with.
+
+### Colors (`data/colors.lua`)
+
+```lua
+{ name = 'blue', label = 'Blue', color = '#1f5fd1' },
+```
+
+### Designs (`data/designs.lua`)
+
+```lua
+{ name = 'woodland', label = 'Woodland Camo', image = 'woodland.svg' },
+```
+
+With `itemColors` on, every color apart from `graphite` needs an item called `radio_<name>`, like `radio_blue`. There is configuration files provided for both `ox_inventory` and `qb-inventory` for every color and design included with the resource along with item images.
+
+### Police app (`data/leo.lua`)
+
+| Option | Description |
+|---|---|
+| `enabled` | Set to `false` to hide the Police app. |
+| `codes` | The 10-codes officers can set, they show next to their name on the radio. |
+| `wellness.enabled` | Sends a wellness check to the officer's channel when they haven't moved for a while. |
+| `wellness.minutes` | How long an officer has to stand still. |
+| `wellness.distance` | Moving less than this distance doesn't count. |
+| `wellness.requireDuty` | Set to `false` to check officers that are off duty too. |
+| `wellness.blipTime` | How many seconds the wellness check blip stays on the map. |
+
+### Items
+
+The item lists are in the `items` folder:
+
+- `items/ox_inventory.lua` for ox_inventory.
+- `items/qb-inventory.lua` for qb-inventory.
+- Copy `items/images` into your inventory's image folder.
+
+| Item | Description |
+|---|---|
+| `radio` | The radio. |
+| `radio_<color>` / `radio_<design>` | A radio in that color or design, only needed with `itemColors` on. |
+| `radio_battery` | A power bank that charges your radio. |
+| `radio_jammer` | A signal jammer. |
+
+> **Important:** Radios and power banks must not stack (`stack = false` on ox_inventory, `unique = true` on qb-inventory), otherwise they can't each keep their own charge.
+
+### Power banks
+
+Using a power bank plugs it into whichever radio in your inventory has the least charge, and charges it up over time. The power bank stays in your inventory and loses charge as it goes, you can see how much it has left on the item. It stops when the radio is full, the power bank is empty, or you lose either one.
+
+Flat power banks charge back up while you sit in a vehicle.
+
+### Add-on packs
+
+Add-on packs add new designs to the radio, and install by dragging them into the resource. They never replace your files, so your config stays exactly how you set it.
+
+**Installing a pack**
+
+1. Drag the pack's `data`, `designs`, `items` and `stream` folders into your `scully_radio3` folder, and merge them when asked.
+2. If you use `itemColors`, add the pack's items from its `items/addons` file to your inventory and copy its images into your inventory's image folder.
+3. Restart your server.
+
+To remove a pack, delete its files and restart.
+
+---
+
+## Keybinds & Commands
+
+| Keybind | Default | Description |
+|---|---|---|
+| Radio: Open | `U` | Opens the radio. |
+| Radio: Next channel | `PAGEUP` | Next channel. |
+| Radio: Previous channel | `PAGEDOWN` | Previous channel. |
+| Radio: Last channel | | Jumps back to the last channel. |
+| Radio: Toggle scan | | Turns listening to extra channels on and off. |
+| Radio: Power | | Turns the radio on and off. |
+| Radio: Volume up | | Turns the volume up. |
+| Radio: Volume down | | Turns the volume down. |
+
+Players can change these in their GTA key settings under FiveM.
+
+| Command | Description |
+|---|---|
+| `/radio` | Opens the radio. Needs a radio item if items are enabled. |
+| `/jammer` | Places a jammer, for players that are allowed to. Needs a jammer item if enabled. |
+
+Placing a jammer:
+
+| Control | Description |
+|---|---|
+| `Enter` | Place it. |
+| Arrow left / right | Turn it. |
+| `Backspace` | Cancel. |
+
+Next to a jammer:
+
+| Control | Description |
+|---|---|
+| `E` | Opens the jammer. |
+| `G` | Picks the jammer up. |
+
+On the jammer:
+
+| Control | Description |
+|---|---|
+| `PWR` / `P` | Turns the jammer on and off. |
+| `MODE` / `M` | Switches between the range and the allowed channels. |
+| `<` `>` / arrow keys | Changes the range, or flicks through the allowed channels. |
+| `0`-`9` and `.` | Types a channel to allow through. |
+| `ENT` / `Enter` | Allows the typed channel. |
+| `CLR` / `Backspace` | Deletes a number, or removes the allowed channel on screen. |
+| `CUR CH` / `C` | Allows the channel your radio is on. |
+| `Esc` | Closes the jammer. |
+
+---
+
+## Exports
+
+### Client exports
+
+| Export | Description |
+|---|---|
+| `isOpen()` | `true` while the radio is open. |
+| `isPowered()` | `true` while the radio is on. |
+| `getChannel()` | The channel the player is on, `0` if none. |
+| `getBattery()` | The battery from `0` to `100`. |
+| `openRadio(color)` | Opens the radio. `color` is optional, a preset name or hex color to lock the radio to. |
+| `closeRadio()` | Closes the radio. |
+| `setPower(state)` | Turns the radio on or off. |
+| `joinChannel(frequency)` | Joins a channel, `false` if the player isn't allowed on it. |
+| `leaveChannel()` | Leaves the channel. |
+| `notify(type, text, icon, duration)` | Shows a notification on the radio, only while it's on. |
+| `setInterference(value)` | Makes the player's signal worse, from `0.0` to `1.0`. |
+| `getSignal()` | The player's signal from `0.0` (none) to `1.0` (perfect). |
+| `openJammer()` | Opens the jammer the player is standing next to, if they're allowed to use it. |
+| `pickupJammer()` | Picks up the jammer the player is standing next to, if they're allowed to. |
+| `customJammerInteraction(func)` | Turns off the jammer help text so you can use your own interaction. `func` runs once in its own thread, call `openJammer()` and `pickupJammer()` from it. |
+| `customHelpAlert(show, hide)` | Swaps out the help text, like the jammer's `E` prompt. `show(text)` runs once when it appears and `hide()` runs once when it goes away. |
+
+```lua
+-- ox_lib text UI example.
+exports.scully_radio3:customHelpAlert(function(text)
+    lib.showTextUI(text)
+end, function()
+    lib.hideTextUI()
+end)
+```
+
+### Server exports
+
+| Export | Description |
+|---|---|
+| `getPlayerName(source)` | The name and callsign shown on the radio. |
+| `getBattery(source)` | The player's battery from `0` to `100`. |
+| `setBattery(source, level)` | Sets the player's battery from `0` to `100`. |
+
+```lua
+exports.scully_radio3:setBattery(source, 100)
+```
+
+### Events
+
+Client events:
+
+| Event | Arguments | Description |
+|---|---|---|
+| `scully_radio3:opened` | | The radio was opened. |
+| `scully_radio3:powerChanged` | `state` | The radio was turned on or off. |
+| `scully_radio3:channelChanged` | `frequency`, `old` | The player changed channel. |
+| `scully_radio3:receiving` | `serverId`, `state`, `frequency` | Someone started or stopped talking on the player's channel. |
+| `scully_radio3:settingsLoaded` | `settings` | The player's radio settings loaded. |
+| `scully_radio3:settingChanged` | `key`, `value` | The player changed a setting. |
+
+Server events:
+
+| Event | Arguments | Description |
+|---|---|---|
+| `scully_radio3:playerLoaded` | `source` | A player's radio loaded. |
+| `scully_radio3:channelChanged` | `source`, `frequency`, `old` | A player changed channel. |
+| `scully_radio3:emergencySent` | `source`, `frequency`, `coords` | A player pressed the panic button. |
+| `scully_radio3:wellnessCheck` | `source`, `frequency`, `coords` | A wellness check went out for an officer. |
+
+```lua
+AddEventHandler('scully_radio3:emergencySent', function(source, frequency, coords)
+    print(('%s pressed their panic button on %s'):format(GetPlayerName(source), frequency))
+end)
+```
+
+### State bags
+
+| State bag | Type | Description |
+|---|---|---|
+| `radioPower` | Player | `true` while the player's radio is on. |
+| `radioBattery` | Player | `{ level, serial, item }`, the player's battery and the radio it belongs to. |
+| `radioInterference` | Player | How bad the player's signal is, from `0.0` to `1.0`. |
+| `radioJammers` | Global | Every jammer on the map. |
+
+---
+
+## Locales
+
+The languages are in the `locales` folder. Copy `en.lua`, translate it and set it in `scully_radio3.cfg`:
+
+```
+setr scully_radio3:locale "en"
+```
+
+---
+
+## Showcase
+
+https://youtu.be/lKjy3TKmsJI
+
+---
+
+## Support
+
+For support, updates and community discussion, join the Scully's Development community:
+
+https://discord.gg/scully
