@@ -78,7 +78,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/Scullyy/Scullyy.github.io/tree/main',
   sidebar: {
-    defaultMenuCollapseLevel: 1,
+    defaultMenuCollapseLevel: 2,
     toggleButton: true,
   },
   toc: {
